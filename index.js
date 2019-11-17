@@ -15,10 +15,12 @@ const DEFAULT_BATCH_SIZE = 100;
  * @param {object} params - other Sequelize parameters
  */
 async function performSearch(model, inputStream, { batchSize = DEFAULT_BATCH_SIZE, limit, offset = 0, ...params }) {
+  var countParams = Object.assign({}, params);
+  delete countParams.attributes;
   try {
     let max = limit;
     if (!max) {
-      max = await model.count({ ...params, limit, offset });
+      max = await model.count({ ...countParams, limit, offset });
     }
     const offsets = [];
     let start = offset;
